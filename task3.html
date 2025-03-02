@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full-Stack Project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        header {
+            background: #333;
+            color: white;
+            padding: 15px;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        .hero {
+            padding: 50px;
+            background: #f4f4f4;
+        }
+        button {
+            background: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">My Website</div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section id="home" class="hero">
+        <h1>Welcome to Our Website</h1>
+        <p>Your success starts here.</p>
+        <button onclick="fetchMessage()">Get Message</button>
+        <p id="message">Loading...</p>
+    </section>
+    
+    <script>
+        async function fetchMessage() {
+            try {
+                const response = await fetch("http://localhost:5000/api/message");
+                const data = await response.json();
+                document.getElementById("message").innerText = data.message;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchMessage);
+    </script>
+
+    <script>
+        // Node.js Backend (Embedded for reference, needs a separate environment)
+        const express = require("express");
+        const cors = require("cors");
+
+        const app = express();
+        const PORT = 5000;
+
+        app.use(cors());
+        app.use(express.json());
+
+        app.get("/api/message", (req, res) => {
+            res.json({ message: "Hello from the backend!" });
+        });
+
+        app.listen(PORT, () => {
+            console.log(`Server is running on http://localhost:${PORT}`);
+        });
+    </script>
+</body>
+</html>
